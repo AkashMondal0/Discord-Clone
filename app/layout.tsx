@@ -4,6 +4,7 @@ import { Open_Sans } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import { ThemeProvider } from '@/components/provider/theme-provider'
 import { cn } from '@/lib/utils'
+import ModelProvider from '@/components/provider/modal-provider'
 const font = Open_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({
             // forcedTheme='light'
             enableSystem={false}
             storageKey='Discord-Clone-theme'>
+            <ModelProvider />
             {children}
           </ThemeProvider>
         </body>

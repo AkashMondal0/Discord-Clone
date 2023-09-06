@@ -17,19 +17,22 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import FileUpload from '../file-upload';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useModal } from '@/hooks/use-modal-store';
 
 const formSchema = z.object({
     name: z.string().min(1, { message: 'Server name is required' }),
     imageUrl: z.string().min(1, { message: 'Server image is required' }),
 })
 
-interface InitialModalProps { }
-const InitialModal: FC<InitialModalProps> = () => {
-    const [isMounted, setIsMounted] = useState(false)
+interface CreateServerModelProps { }
+const CreateServerModel: FC<CreateServerModelProps> = () => {
+    const router = useRouter()
+    const { isOpen, onClose, type } = useModal()
 
-    useEffect(() => {
-        setIsMounted(true)
-    }, [])
+    const isModalOpen = isOpen && type === "createServer"
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -39,14 +42,27 @@ const InitialModal: FC<InitialModalProps> = () => {
     })
     const isLoading = form.formState.isSubmitting;
 
-    const onSubmit = async (data: z.infer<typeof formSchema>) => {
-        console.log(data)
+    const onSubmit = async (value: z.infer<typeof formSchema>) => {
+        try {
+            await axios.post("/api/servers", value)
+
+            form.reset()
+            router.refresh()
+            onClose()
+        } catch (error) {
+            console.log(error)
+        }
     }
 
-    if (!isMounted) return null
+
+    const handleClose = () => {
+        form.reset()
+        onClose()
+    }
+
 
     return (
-        <Dialog open>
+        <Dialog open={isModalOpen} onOpenChange={handleClose}>
             <DialogContent className='bg-white text-black p-0 overflow-hidden'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-bold'>
@@ -60,19 +76,19 @@ const InitialModal: FC<InitialModalProps> = () => {
                     <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
                         <div className='space-y-8 px-6'>
                             <div className='flex items-center justify-center text-center'>
-                              <FormField control={form.control}
-                              name='imageUrl'
-                              render={({field}) => (
-                                <FormItem>
-                                    <FormControl>
-                                       <FileUpload 
-                                       value={field.value}
-                                        onChange={field.onChange}
-                                       endpoint="serverImage"/>
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                              )} />
+                                <FormField control={form.control}
+                                    name='imageUrl'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <FileUpload
+                                                    value={field.value}
+                                                    onChange={field.onChange}
+                                                    endpoint="serverImage" />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )} />
                             </div>
 
                             <FormField
@@ -114,4 +130,4 @@ const InitialModal: FC<InitialModalProps> = () => {
     );
 };
 
-export default InitialModal;
+export default CreateServerModel;
