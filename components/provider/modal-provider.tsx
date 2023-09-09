@@ -4,6 +4,7 @@ import CreateServerModel from '@/components/modals/create-server-modal';
 import InviteServerModel from '@/components/modals/invite-server-modal';
 import EditServerModel from '@/components/modals/edit-server-modal';
 import MembersServerModel from '@/components/modals/members-server-modal';
+import CreateChannelModel from '@/components/modals/create-channel-modal';
 
 interface ModelProviderProps {
 }
@@ -24,6 +25,7 @@ const ModelProvider: FC<ModelProviderProps> = ({
             <InviteServerModel />
             <EditServerModel />
             <MembersServerModel/>
+            <CreateChannelModel/>
         </>
     );
 };
