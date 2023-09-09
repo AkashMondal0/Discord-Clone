@@ -28,8 +28,8 @@ const FileUpload: FC<FileUploadProps> = ({
                     className='rounded-full'
                     alt={'Upload'} />
                 <Button
-                    className='bg-red-500 text-white p-1 rounded-full
-                     absolute top-0 right-0 shadow-md'
+                    className='bg-red-500 text-white rounded-full
+                     absolute top-0 right-0 shadow-md p-1 w-6 h-6'
                     onClick={() => onChange('')}>
                     <X className='h-4 w-4' />
                 </Button>

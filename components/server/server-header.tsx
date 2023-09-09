@@ -4,6 +4,7 @@ import { MemberRole } from '@prisma/client';
 import { FC } from 'react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from 'lucide-react';
+import { useModal } from '@/hooks/use-modal-store';
 
 interface ServerHeaderProps {
     server: ServerWithMembersWithProfiles
@@ -13,6 +14,7 @@ const ServerHeader: FC<ServerHeaderProps> = ({
     server,
     role
 }) => {
+    const { onOpen } = useModal()
 
     const isAdmin = role === MemberRole.ADMIN
     const isModerator = isAdmin || role === MemberRole.MODERATOR
@@ -30,13 +32,17 @@ const ServerHeader: FC<ServerHeaderProps> = ({
             <DropdownMenuContent className='w-56 text-xs font-medium
              text-black dark:text-neutral-400 space-y-[2px]'>
                 {isModerator && (
-                    <DropdownMenuItem className=' text-indigo-600 dark:text-indigo-400
+                    <DropdownMenuItem
+                        onClick={() => onOpen("invite", { server })}
+                        className=' text-indigo-600 dark:text-indigo-400
                     px-3 py-2 text-sm cursor-pointer'>
                         Invite People <UserPlus className='ml-auto w-4 h-4' />
                     </DropdownMenuItem>
                 )}
                 {isAdmin && (
-                    <DropdownMenuItem className='px-3 py-2 text-sm cursor-pointer'>
+                    <DropdownMenuItem
+                        onClick={() => onOpen("editServer", { server })}
+                        className='px-3 py-2 text-sm cursor-pointer'>
                         Server Setting <Settings className='ml-auto w-4 h-4' />
                     </DropdownMenuItem>
                 )}
@@ -60,7 +66,7 @@ const ServerHeader: FC<ServerHeaderProps> = ({
                         <Trash className='ml-auto w-4 h-4' />
                     </DropdownMenuItem>
                 )}
-                 {!isAdmin && (
+                {!isAdmin && (
                     <DropdownMenuItem className='text-rose-500 px-3 py-2 text-sm cursor-pointer'>
                         Leave Server
                         <LogOut className='ml-auto w-4 h-4' />
