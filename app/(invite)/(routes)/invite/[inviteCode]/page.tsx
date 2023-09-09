@@ -13,25 +13,32 @@ const InviteCode: FC<InviteCodeProps> = async ({
     }
 }) => {
     const profile = await currentProfile()
-
+    // 
     if (!profile) {
         return redirectToSignIn()
     }
-
+    // 
     if (!inviteCode) {
         return redirect('/')
     }
 
+    // 
     const existingServer = await db.server.findFirst({
         where: {
-            profileId: profile?.id
+          inviteCode,
+          members: {
+            some: {
+              profileId: profile.id
+            }
+          }
         }
-    })
-
-    if (existingServer) {
-        return redirect(`/servers/${existingServer.id}`)
-    }
-
+      });
+    
+      if (existingServer) {
+        return redirect(`/servers/${existingServer.id}`);
+      }
+    
+    //   
     const server = await db.server.update({
         where: {
             inviteCode // params id

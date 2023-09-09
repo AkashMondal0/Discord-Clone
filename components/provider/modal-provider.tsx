@@ -1,8 +1,9 @@
 'use client'
 import { FC, useEffect, useState } from 'react';
-import CreateServerModel from '../modals/create-server-modal';
-import InviteServerModel from '../modals/invite-server-modal';
-import EditServerModel from '../modals/edit-server-modal';
+import CreateServerModel from '@/components/modals/create-server-modal';
+import InviteServerModel from '@/components/modals/invite-server-modal';
+import EditServerModel from '@/components/modals/edit-server-modal';
+import MembersServerModel from '@/components/modals/members-server-modal';
 
 interface ModelProviderProps {
 }
@@ -22,6 +23,7 @@ const ModelProvider: FC<ModelProviderProps> = ({
             <CreateServerModel />
             <InviteServerModel />
             <EditServerModel />
+            <MembersServerModel/>
         </>
     );
 };
