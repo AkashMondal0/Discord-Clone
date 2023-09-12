@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import qs from "query-string"
 import axios from 'axios';
 import {
@@ -39,15 +39,16 @@ interface CreateChannelModelProps { }
 const CreateChannelModel: FC<CreateChannelModelProps> = () => {
     const router = useRouter()
     const params = useParams()
-    const { isOpen, onClose, type } = useModal()
+    const { isOpen, onClose, type, data } = useModal()
 
     const isModalOpen = isOpen && type === "createChannel"
+    const { channelType } = data
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: '',
-            type: ChannelType.TEXT
+            type: channelType || ChannelType.TEXT
         }
     })
     const isLoading = form.formState.isSubmitting;
@@ -76,7 +77,13 @@ const CreateChannelModel: FC<CreateChannelModelProps> = () => {
         onClose()
     }
 
-
+    useEffect(() => {
+        if (channelType) {
+            form.setValue("type", channelType)
+        } else {
+            form.setValue("type", ChannelType.TEXT)
+        }
+    }, [channelType, form])
     return (
         <Dialog open={isModalOpen} onOpenChange={handleClose}>
             <DialogContent className='bg-white text-black p-0 overflow-hidden'>
