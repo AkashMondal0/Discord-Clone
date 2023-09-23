@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/provider/theme-provider'
 import { cn } from '@/lib/utils'
 import ModelProvider from '@/components/provider/modal-provider'
 import { SocketProvider } from '@/components/provider/socket-provider'
+import { QueryProvider } from '@/components/provider/query-provider'
 const font = Open_Sans({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -29,10 +30,12 @@ export default function RootLayout({
             // forcedTheme='light'
             enableSystem={false}
             storageKey='Discord-Clone-theme'>
-            <SocketProvider>
-              <ModelProvider />
-              {children}
-            </SocketProvider>
+            <QueryProvider>
+              <SocketProvider>
+                <ModelProvider />
+                {children}
+              </SocketProvider>
+            </QueryProvider>
           </ThemeProvider>
         </body>
       </html>
