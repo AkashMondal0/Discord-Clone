@@ -7,7 +7,7 @@ interface ChatHeaderProps {
     serverId: string;
     name: string;
     type: "conversation" | "channel";
-    imageUrl: string;
+    imageUrl?: string;
 }
 const ChatHeader: FC<ChatHeaderProps> = ({
     serverId,
@@ -24,7 +24,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
             )}
             {type === "conversation" && (
                 <UserAvatar
-                    src={imageUrl}
+                    src={imageUrl || ""}
                     className="h-8 w-8 md:h-8 md:w-8 mr-2"
                 />
             )}
@@ -35,7 +35,7 @@ const ChatHeader: FC<ChatHeaderProps> = ({
                 {/* {type === "conversation" && (
             <ChatVideoButton />
           )} */}
-          <SocketIndicator />
+                <SocketIndicator />
             </div>
         </div>
     );
