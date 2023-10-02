@@ -43,6 +43,7 @@ const ChannelId: FC<ChannelIdProps> = async ({
   if (!member || !channel) {
     return redirect(`/servers/${serverId}`)
   }
+  // console.log(channel)
   return (
     <div className='bg-white dark:bg-[#313338] flex flex-col h-full'>
       <ChatHeader serverId={serverId} name={channel.name} type={'channel'} />
